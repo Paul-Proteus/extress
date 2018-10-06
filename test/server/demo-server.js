@@ -4,14 +4,14 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 require('dotenv').config(); 
+extress = require('../../extress');
 
 const mongoDB = process.env.MONGOLAB_URI;
-mongoose.connect(mongoDB);
+mongoose.connect(mongoDB, { useNewUrlParser: true });
 mongoose.Promise = global.Promise;
 
 const db = mongoose.connection;
 
-extress = require('../../extress');
 
 const dummyController1 = require('./controllers/dummyController1');
 const dummyController2 = require('./controllers/dummyController2');
@@ -23,6 +23,8 @@ const PORT = 3333;
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 
 app.get('/', dummyController1.mw1, dummyController1.mw2, dummyController1.mw3, dummyController1.mwLast);
 app.post('/', dummyController1.mw1, dummyController1.mw2, dummyController1.mw3, dummyController1.mwLast);
