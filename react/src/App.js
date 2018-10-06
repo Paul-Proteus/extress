@@ -8,6 +8,7 @@ import Team from "./Team";
 //import Socket from './components/socket.jsx';
 import Dashboard from './components/Dashboard.jsx';
 
+
 const containerStyles = {
   width: "95%",
   height: "95%"
@@ -20,35 +21,37 @@ class App extends Component {
       perfData: [],
       treeData: null,
       rows: null
-
     };
     // Binding methods for tree manipulation
-    this.onClick = this.onClick.bind(this);
+    // this.onClick = this.onClick.bind(this);
+    // this.generateTree = this.generateTree.bind(this);
   }
   //click events for each node performance
 
-  onClick(e) {
-    console.log('perData', this.state.perfData)
-    const myDisplay = this.state.perfData.filter(value => {
-      console.log('value', value)
-      return e.name == value.route;
-    });
-    console.log(e.name)
-    // console.log("myDisplaysss", myDisplay);
-    //This is coping the data from
+  // onClick(e) {
+  //   console.log('perData', this.state.perfData)
+  //   const myDisplay = this.state.perfData.filter(value => {
+  //     console.log('value', value)
+  //     return e.name == value.route;
+  //   });
+  //   console.log(e.name)
+  //   // console.log("myDisplaysss", myDisplay);
+  //   //This is coping the data from
 
-    if (myDisplay.length > 0) {
-      console.log('row', rows)
-      rows = myDisplay.slice();
-      let method = rows[0].method;
-      this.setState({ rows });
-    }
-  }
+  //   if (myDisplay.length > 0) {
+  //     //console.log('row', rows)
+  //     rows = myDisplay.slice();
+  //     let method = rows[0].method;
+  //     this.setState({ rows });
+  //   }
+  // }
+
   componentDidMount() {
     socket.on('tree', tree => {
       console.log('trees', tree)
       this.setState({ treeData: [tree.root] })
-    })
+    });
+
     if (this.state.treeData) {
       const dimensions = this.treeContainer.getBoundingClientRect();
       this.setState({
@@ -60,11 +63,12 @@ class App extends Component {
           siblings: .5,
           nonSiblings: .5
         }
-      })
+      });
+
       socket.on('data', data => {
         let newArr = this.state.perfData;
         newArr.push(JSON.stringify(data));
-        console.log('testData', newArr)
+        //console.log('testData', newArr)
         this.setState({ perfData: newArr });
       });
     }
@@ -76,7 +80,7 @@ class App extends Component {
         <div>
           <Dashboard />
           <div id="treeWrapper"
-            style={{ width: "80em", height: "40em" }}
+            style={{ containerStyles }}
             ref={tc => (this.treeContainer = tc)}
           >
             <Tree
@@ -85,16 +89,21 @@ class App extends Component {
               translate={this.state.translate}
               onClick={this.onClick}
               initialDepth={200}
+              separation={this.state.separation}
+              translate={this.state.translate}
             />
           </div>
 
-          <DashboardContainer rows={this.state.rows} />
+          {/* <DashboardContainer rows={this.state.rows} /> */}
         </div>
       );
 
     }
     return (
-      <div>  <Dashboard /> </div>
+      <div> 
+         <Dashboard /> 
+         <button onClick={this.generateTree} >Generate Tree</button>
+      </div>
     )
   }
 

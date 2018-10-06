@@ -20,6 +20,13 @@ body {
   text-align: center;
 }
 
+#treeWrapper {
+  font-family: Arial, Helvetica, sans-serif;
+  /* background-color: RGB(17,23,23); */
+  background-color: lightcoral;
+  height: 70%;
+  width: 100%;
+}
 
 .modal {
   position: fixed;
