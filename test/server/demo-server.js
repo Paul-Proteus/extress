@@ -2,12 +2,16 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+require('dotenv').config(); 
 
+const mongoDB = process.env.MONGOLAB_URI;
+mongoose.connect(mongoDB);
+mongoose.Promise = global.Promise;
 
+const db = mongoose.connection;
 
 extress = require('../../extress');
-
-
 
 const dummyController1 = require('./controllers/dummyController1');
 const dummyController2 = require('./controllers/dummyController2');
@@ -15,10 +19,7 @@ const dummyController3 = require('./controllers/dummyController3');
 const dummyController4 = require('./controllers/dummyController4');
 const PORT = 3333;
 
-
-app.use(extress.routeTimer);
-
-
+//app.use(extress.routeTimer);
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -214,6 +215,6 @@ app.put('/heavily/nested/trash/routes', dummyController3.mw1, dummyController1.m
 app.delete('/heavily/nested/trash/routes', dummyController4.mw1, dummyController1.mwLast);
 
 app.listen(PORT, () => {
-  extress.map(app);
+  //extress.map(app);
   console.log(`Listening on ${PORT}`);
 });
